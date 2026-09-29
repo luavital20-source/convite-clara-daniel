@@ -1,6 +1,6 @@
 # Convite digital — Clara & Daniel
 
-Convite de casamento (`index.html`) e lista de presentes (`presentes.html`), prontos para publicar no GitHub Pages / Vercel.
+Convite de casamento com lista de presentes (`index.html`), pronto para publicar no GitHub Pages / Vercel.
 
 - **Data:** sexta-feira, 17 de setembro de 2027
 - **Horário no convite:** 19h00 (a cerimônia começa às 19h30)
@@ -19,14 +19,16 @@ Todos os textos e links ficam no bloco `CONFIG` no final do `index.html`:
 | `localNome` / `localEndereco` / `mapLocal` | local e link do Maps |
 | `traje` | texto do dress code |
 | `musicaYoutube` / `musicaArquivo` | ID do vídeo do YouTube, ou caminho de um `.mp3` (tem prioridade) |
-| `listaPresentes` | link da lista (`presentes.html`) — vazio esconde a seção |
+| `pixChave` / `pixNome` / `pixCidade` | Pix que recebe os presentes da lista |
 | `rsvpLink` ou `whatsapp` | confirmação de presença — vazio esconde a seção |
 
-## Lista de presentes (`presentes.html`)
+## Lista de presentes
 
-- Itens, valores e fotos ficam na lista `PRESENTES` no final do arquivo.
+- Fica dentro do próprio convite (seção "Lista de presentes"); `presentes.html` é só um atalho
+  que abre o convite já nessa seção.
+- Itens, valores e fotos ficam na lista `PRESENTES`, logo abaixo do `CONFIG`.
 - Ao tocar em **Presentear**, o convidado recebe um Pix *copia e cola* (e QR Code) já com o valor do item.
-  Preencha `pixChave` e `pixNome` no `CONFIG` — enquanto estiverem vazios, aparece um aviso de "em breve".
+  Preencha `pixChave` e `pixNome` — enquanto estiverem vazios, aparece um aviso de "em breve".
 - `whatsapp` (opcional) mostra o botão para o convidado avisar os noivos do presente.
 - A página é estática: não marca itens como "já presenteados".
 
