@@ -6,7 +6,7 @@ Convite de casamento com lista de presentes (`index.html`), pronto para publicar
 - **Horário no convite:** 19h00 (a cerimônia começa às 19h30)
 - **Local (cerimônia e recepção):** R. Dr. Rodrigo Codes Sandoval, 76 — Mondubim, Fortaleza — CE, 60711-455
 - **Paleta:** branco, verde e champagne/dourado
-- **Música:** YouTube `-hb2tecD13s` (toca ao tocar em "toque para abrir")
+- **Música:** YouTube `-hb2tecD13s`, a partir de 0:21 (entrada do piano). Carrega sem som e liga o som no toque em "toque para abrir"; ao terminar, volta para 0:21
 - **Versículo:** Salmos 37:5
 
 ## Como editar
@@ -18,7 +18,7 @@ Todos os textos e links ficam no bloco `CONFIG` no final do `index.html`:
 | `horario` / `dataEvento` | horário exibido e alvo da contagem regressiva |
 | `localNome` / `localEndereco` / `mapLocal` | local e link do Maps |
 | `traje` | texto do dress code |
-| `musicaYoutube` / `musicaArquivo` | ID do vídeo do YouTube, ou caminho de um `.mp3` (tem prioridade) |
+| `musicaYoutube` / `musicaInicio` / `musicaArquivo` | ID do vídeo, segundo em que a música começa, ou caminho de um `.mp3` (tem prioridade) |
 | `infinitePay` | presentes pagos pelo Checkout da InfinitePay (cartão até 12x ou Pix) |
 | `pixChave` / `pixNome` / `pixCidade` | Pix direto opcional, mostrado como alternativa |
 | `whatsapp` | recebe as confirmações de presença e os recados de presente |

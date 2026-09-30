@@ -544,7 +544,7 @@ const CONFIG = {
   // Se preferir um arquivo .mp3 (mais confiável no iPhone), coloque-o na pasta
   // e preencha musicaArquivo — ele passa a ser usado no lugar do YouTube.
   musicaYoutube: '-hb2tecD13s',
-  musicaInicio:  0,           // segundo do vídeo em que a música começa (ex.: 1:05 → 65)
+  musicaInicio:  21,          // segundo do vídeo em que a música começa (ex.: 1:05 → 65)
   musicaArquivo: '',
 
   // Presentes: pagamento por cartão (até 12x) ou Pix pelo Checkout da
@@ -870,27 +870,34 @@ const music=(function(){
       paused(){return audio.paused;},
     };
   }
-  let player=null,ready=false,wantPlay=false,playing=false;
+  // O vídeo já carrega tocando sem som (os navegadores permitem isso). No toque em
+  // "toque para abrir" ele volta para musicaInicio e liga o som na hora.
+  const START=Math.floor(CONFIG.musicaInicio||0);
+  let player=null,ready=false,wantPlay=false,playing=false,started=false;
+  function sound(){
+    if(!started){player.seekTo(START,true);started=true;}
+    player.unMute();player.setVolume(85);player.playVideo();
+  }
   window.onYouTubeIframeAPIReady=function(){
     player=new YT.Player('ytPlayer',{
       width:1,height:1,videoId:CONFIG.musicaYoutube,
-      playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:Math.floor(CONFIG.musicaInicio||0)},
+      playerVars:{autoplay:1,mute:1,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:START},
       events:{
-        onReady(){ready=true;player.setVolume(85);if(wantPlay)player.playVideo();},
+        onReady(){ready=true;if(wantPlay)sound();else{player.mute();player.playVideo();}},
         onStateChange(e){
           // no fim, recomeça do ponto escolhido (e não do início do vídeo)
-          if(e.data===YT.PlayerState.ENDED&&wantPlay){player.seekTo(CONFIG.musicaInicio||0,true);player.playVideo();}
+          if(e.data===YT.PlayerState.ENDED){player.seekTo(START,true);player.playVideo();}
           playing=e.data===YT.PlayerState.PLAYING||e.data===YT.PlayerState.BUFFERING;
-          setMusicIcon(playing);
+          setMusicIcon(playing&&wantPlay);
         },
       },
     });
   };
   const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
   return {
-    play(){wantPlay=true;if(ready)player.playVideo();},
-    pause(){wantPlay=false;if(ready)player.pauseVideo();},
-    paused(){return !playing;},
+    play(){wantPlay=true;if(ready)sound();},
+    pause(){wantPlay=false;if(ready)player.pauseVideo();setMusicIcon(false);},
+    paused(){return !(wantPlay&&playing);},
   };
 })();
 /* rede de segurança: se algum navegador adiar, o 1º toque na página libera o som */
