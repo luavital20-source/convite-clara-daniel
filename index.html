@@ -755,12 +755,13 @@ function openGift(it){
       b.disabled=true;lbl.textContent='Abrindo pagamento…';err.style.display='none';
       try{
         const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:it.nome,valor:it.valor})});
-        const d=await r.json();
-        if(!r.ok||!d.url)throw new Error(d.error||'erro');
+        if(r.status===404)throw new Error('função de pagamento não encontrada no site (404)');
+        const d=await r.json().catch(()=>({}));
+        if(!r.ok||!d.url)throw new Error((d.detalhes||[d.error||('erro '+r.status)]).join(' | '));
         location.href=d.url;
       }catch(e){
         b.disabled=false;lbl.textContent='Presentear agora';
-        err.textContent='Não foi possível abrir o pagamento agora. Tente novamente em instantes.';err.style.display='';
+        err.innerHTML='Não foi possível abrir o pagamento no cartão agora. Você pode usar o Pix abaixo.<br><small style="opacity:.7">Detalhe: '+esc(String(e.message||e))+'</small>';err.style.display='';
       }
     });
   }
