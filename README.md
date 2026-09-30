@@ -19,21 +19,31 @@ Todos os textos e links ficam no bloco `CONFIG` no final do `index.html`:
 | `localNome` / `localEndereco` / `mapLocal` | local e link do Maps |
 | `traje` | texto do dress code |
 | `musicaYoutube` / `musicaArquivo` | ID do vídeo do YouTube, ou caminho de um `.mp3` (tem prioridade) |
-| `pixChave` / `pixNome` / `pixCidade` | Pix que recebe os presentes da lista |
-| `rsvpLink` ou `whatsapp` | confirmação de presença — vazio esconde a seção |
+| `infinitePay` | presentes pagos pelo Checkout da InfinitePay (cartão até 12x ou Pix) |
+| `pixChave` / `pixNome` / `pixCidade` | Pix direto opcional, mostrado como alternativa |
+| `whatsapp` | recebe as confirmações de presença e os recados de presente |
 
 ## Lista de presentes
 
 - Fica dentro do próprio convite (seção "Lista de presentes"); `presentes.html` é só um atalho
   que abre o convite já nessa seção.
 - Itens, valores e fotos ficam na lista `PRESENTES`, logo abaixo do `CONFIG`.
-- Ao tocar em **Presentear**, o convidado recebe um Pix *copia e cola* (e QR Code) já com o valor do item.
-  Preencha `pixChave` e `pixNome` — enquanto estiverem vazios, aparece um aviso de "em breve".
+- Ao tocar em **Presentear agora**, o convite chama `api/checkout.js` (Vercel Function), que cria um
+  link no Checkout da InfinitePay (InfiniteTag `maria-clara-silva-864`) com o valor do item e redireciona
+  o convidado. Depois do pagamento ele volta ao convite (`?presente=obrigado`) e vê um agradecimento.
+- Se `pixChave` e `pixNome` forem preenchidos, o Pix copia e cola aparece como alternativa.
 - `whatsapp` (opcional) mostra o botão para o convidado avisar os noivos do presente.
 - A página é estática: não marca itens como "já presenteados".
 
+## Confirmação de presença (RSVP)
+
+- A lista `CONVIDADOS` fica logo abaixo de `PRESENTES`. O convidado digita o nome (acentos e
+  maiúsculas não importam; só o primeiro nome basta se for único na lista).
+- Com `whatsapp` preenchido, o convidado confirmado envia a confirmação aos noivos pelo WhatsApp.
+
 ## Arquivos
 
+- `api/checkout.js` — cria o link de pagamento na InfinitePay
 - `assets/noivos.jpg` — foto dos noivos (capa)
 - `assets/local.jpg` — foto do local
 - `assets/monograma.png` — monograma CD (máscara transparente, recolorida via CSS)

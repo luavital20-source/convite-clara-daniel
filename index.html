@@ -217,6 +217,21 @@
 
   /* ───────── RSVP ───────── */
   #rsvp{padding:64px 0 44px;text-align:center;}
+  .rsvp-form{display:flex;flex-direction:column;gap:12px;max-width:360px;margin:26px auto 0;}
+  .rsvp-input{font-family:'Jost',sans-serif;font-size:15px;font-weight:300;color:var(--ink);text-align:center;background:#fff;border:1px solid var(--line);padding:15px 16px;outline:none;transition:.25s;}
+  .rsvp-input:focus{border-color:var(--green);}
+  .rsvp-input.err{border-color:#B5533C;animation:shake .4s;}
+  .rsvp-form .btn-fill{margin-top:0;justify-content:center;cursor:pointer;font-family:'Jost',sans-serif;}
+  .rsvp-hint{font-size:11.5px;color:var(--ink-soft);opacity:.8;}
+  .rsvp-res{margin:26px auto 0;max-width:380px;}
+  .rsvp-ico{width:62px;height:62px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--green-deep);}
+  .rsvp-ico.no{background:#B5533C;}
+  .rsvp-ico svg{width:28px;height:28px;}
+  .rsvp-t{font-family:'Bodoni Moda',serif;font-style:italic;font-size:25px;color:var(--ink);margin-top:16px;}
+  .rsvp-m{font-size:13.5px;line-height:1.8;margin-top:8px;}
+  .rsvp-link{display:inline-block;margin-top:16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-deep);background:none;border:0;border-bottom:1px solid var(--green-soft);padding-bottom:3px;cursor:pointer;font-family:'Jost',sans-serif;text-decoration:none;}
+  .thanks{margin:22px auto 0;max-width:400px;padding:16px 18px;border:1px solid var(--gold);background:rgba(231,216,182,.25);font-family:'Bodoni Moda',serif;font-style:italic;font-size:16px;color:var(--ink);line-height:1.5;}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
   .rsvp-note{font-size:13.5px;line-height:1.85;color:var(--ink-soft);max-width:400px;margin:26px auto 0;}
 
   /* ───────── FOOTER ───────── */
@@ -284,6 +299,9 @@
   .btn.line{background:transparent;color:var(--ink);border-color:var(--ink);}
   .btn svg{width:15px;height:15px;flex-shrink:0;}
   .m-key{font-size:12px;margin-top:10px;color:var(--ink-soft);word-break:break-all;}
+  .btn[disabled]{opacity:.6;cursor:wait;}
+  .m-err{font-size:12.5px;color:#B5533C;margin-top:10px;}
+  .m-or{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);margin-top:22px;}
   .m-soon{font-family:'Bodoni Moda',serif;font-style:italic;font-size:15px;color:var(--green-deep);margin-top:22px;line-height:1.6;}
   body.lock{overflow:hidden;}
   @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
@@ -413,7 +431,7 @@
       <p class="sec-label reveal">lista de presentes</p>
       <h2 class="sec-title reveal">Sua presença é o <span class="it">presente</span></h2>
       <div class="divider reveal"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
-      <p class="gift-note reveal d1">Mas, se desejar nos presentear, escolha um item abaixo — o valor é enviado por Pix e usado com muito carinho para montar o nosso lar (e, claro, a nossa lua de mel).</p>
+      <p class="gift-note reveal d1">Mas, se desejar nos presentear, escolha um item abaixo — o pagamento pode ser feito no cartão (em até 12x) ou Pix e será usado com muito carinho para montar o nosso lar (e, claro, a nossa lua de mel).</p>
       <div class="gift-tools">
         <button class="chip on" data-cat="all">Todos</button>
         <button class="chip" data-cat="casa">Para o lar</button>
@@ -424,22 +442,44 @@
           <option value="desc">Maior valor</option>
         </select>
       </div>
+      <div class="thanks" id="thanks" style="display:none">Recebemos o seu presente — muito obrigado pelo carinho! Clara &amp; Daniel 🤍</div>
       <div class="grid" id="grid"></div>
       <button class="more" id="more"></button>
     </div>
   </section>
 
-  <!-- RSVP (aparece quando CONFIG.rsvpLink ou CONFIG.whatsapp estiver preenchido) -->
-  <section id="rsvp" style="display:none">
+  <!-- RSVP -->
+  <section id="rsvp">
     <div class="inner">
       <p class="sec-label reveal">confirmação de presença</p>
       <h2 class="sec-title reveal">Você <span class="it">vem?</span></h2>
       <div class="divider reveal"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
-      <p class="rsvp-note reveal d1" id="rsvpNote"></p>
-      <a class="btn-fill reveal d2" id="confirmBtn" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.5"/><path d="M8.3 12.2l2.5 2.5 4.9-5.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Confirmar presença
-      </a>
+      <p class="rsvp-note reveal d1">Sua presença fará deste dia um momento ainda mais especial. Digite seu nome para confirmar.</p>
+
+      <form class="rsvp-form reveal d2" id="rsvpForm" autocomplete="off">
+        <input class="rsvp-input" id="rsvpName" type="text" placeholder="Seu nome e sobrenome" aria-label="Seu nome">
+        <button class="btn-fill" type="submit">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.5"/><path d="M8.3 12.2l2.5 2.5 4.9-5.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Confirmar presença
+        </button>
+        <p class="rsvp-hint">Digite seu nome como está no convite.</p>
+      </form>
+
+      <div class="rsvp-res" id="rsvpOk" style="display:none">
+        <div class="rsvp-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p class="rsvp-t" id="rsvpOkT"></p>
+        <p class="rsvp-m" id="rsvpOkM"></p>
+        <a class="btn-fill" id="rsvpWpp" target="_blank" rel="noopener" style="display:none"></a>
+        <br><button class="rsvp-link" type="button" data-reset>Confirmar outro convidado</button>
+      </div>
+
+      <div class="rsvp-res" id="rsvpNo" style="display:none">
+        <div class="rsvp-ico no"><svg viewBox="0 0 24 24" fill="none"><path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <p class="rsvp-t" id="rsvpNoT"></p>
+        <p class="rsvp-m" id="rsvpNoM"></p>
+        <button class="rsvp-link" type="button" data-reset>Tentar novamente</button>
+        <br><a class="rsvp-link" id="rsvpHelp" target="_blank" rel="noopener" style="display:none">Falar com os noivos</a>
+      </div>
     </div>
   </section>
 
@@ -505,16 +545,18 @@ const CONFIG = {
   musicaYoutube: '-hb2tecD13s',
   musicaArquivo: '',
 
-  // Pix que recebe os presentes (lista mais abaixo). Enquanto a chave estiver
-  // vazia, o botão "Presentear" mostra um aviso de "em breve".
+  // Presentes: pagamento por cartão (até 12x) ou Pix pelo Checkout da
+  // InfinitePay. A InfiniteTag fica em api/checkout.js.
+  infinitePay: true,
+
+  // Pix direto (opcional) — aparece como alternativa no presente se preenchido.
   pixChave:  '',              // CPF, e-mail, telefone (+5585...) ou chave aleatória
   pixNome:   '',              // nome do titular da conta (como no banco)
   pixCidade: 'FORTALEZA',
 
-  // confirmação de presença — use UM dos dois; vazio = seção escondida
-  // (o WhatsApp também aparece para o convidado avisar que deu um presente)
-  rsvpLink: '',               // link de formulário/site de RSVP
-  whatsapp: '',               // só números, com DDI+DDD. Ex.: '5585999999999'
+  // WhatsApp dos noivos: recebe as confirmações de presença (RSVP) e os recados
+  // de presente. Só números, com DDI+DDD. Ex.: '5585999999999'
+  whatsapp: '',
 
   versiculo:    'Entrega o teu caminho ao Senhor; confia nele, e ele tudo fará.',
   versiculoRef: 'Salmos 37:5',
@@ -573,6 +615,28 @@ const PRESENTES = [
   ['Looks novos para a lua de mel', 450.00, 'looks-lua-de-mel', 'fun'],
   ['Primeiro na fila do buffet', 500.00, 'fila-buffet', 'fun'],
   ['Cueca sexy pra noite de núpcias', 450.00, 'cueca', 'fun'],
+];
+
+// Lista de convidados (RSVP). O convidado digita o nome; acentos e maiúsculas não importam.
+const CONVIDADOS = [
+  'Agostinho Moreira','Adriana Moreira','Lara Gomes','Thales Gomes','Érika Ascheri','Daniel Ascheri',
+  'Patrícia Silva','Laura Maria','Marcelo Pereira','Diego de Paula','Rebeka Holanda','Arthur Leote',
+  'Linhares Vasconcelos','Aurilene de Deus','Aurélio de Deus','Fernanda de Deus','Aurelia de Deus',
+  'Felipe de Deus','Gabriel de Deus','Aldilene de Deus','Wagner Medeiros','Anastácia de Carvalho',
+  'Isaac de Carvalho','Alexandre de Carvalho','Mônica de Carvalho','Álvaro de Carvalho','Soraia de Carvalho',
+  'Camila Sousa','Milton Sousa','Saulo Sousa','Luisa de Marilac','Geraldo Rolim','Rhuan Albuquerque',
+  'Isabel Albuquerque','David Grangeiro','Luannara Albuquerque','Eduardo Albuquerque','Analu Albuquerque',
+  'Maria Ilma','Álvaro Bento','Magnolia Marreiros','Ana Paula Marreiros','Helio Coutinho','João Hélio',
+  'João Victor','José Bento','Luzia Silva','Levi Silva','Valentina Silva','Álvaro Bento Filho','Fran Barros',
+  'Alvaro Havryer','Caroline Marreiros','Cristina Marreiros','Márcia Marreiros','Bárbara Marreiros',
+  'Marilândia Marreiros','Fabrício','Paulo Dutra','Thomás Dutra','Pedro Dutra','Stefanie Dutra',
+  'Santiago Dutra','Christofer Dutra','Marcel Heset','Linda Monte','Júnior Rodrigues','Lindaenna Rodrigues',
+  'Luca Heset','Sara Feitosa','Victor Soares','Thai Soares','Leonardo Cristóvão','Simone Cristóvão',
+  'Marcos Monteiro','Dora Monteiro','Nahun Maia','Claudia Maia','Mateus Diógenes','Camila Diógenes',
+  'Samir Arcanjo','Marcos Russo','Aliciane Russo','Nicoly Santos','Danyel Callado','Helena Nalanda',
+  'Gabriel Nóbrega','Bruno Lofti','Cida Lofti','Ivo Mitoso','Lia Abreu','Isabelle Mendes','Gabriel Alves',
+  'Yanne Alves','Ana Rebeca','Adriano César','Clara Melo','Maria Rita','Levi Coutinho','Pedro Sabino',
+  'Raiza Lima','Rafael Ferreira','Ticiane Ferreira','Otávio Frota','Leda Frota',
 ];
 
 /* ════════════════════════════════════════════════════════════
@@ -657,25 +721,49 @@ function pixPayload(valor,desc){
 /* ─── Modal ─── */
 const modal=document.getElementById('modal');
 const icoCopy='<svg viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0014.5 4h-9A1.5 1.5 0 004 5.5v9A1.5 1.5 0 005.5 16H8" stroke="currentColor" stroke-width="1.5"/></svg>';
+const icoCard='<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="1.5"/></svg>';
 const icoWpp='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.8 11.9 11.9 0 004.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 001.9-1.3 2.3 2.3 0 00.2-1.3c-.1-.1-.2-.2-.4-.3z"/></svg>';
 function openGift(it){
   document.getElementById('mPic').outerHTML=picHTML(it,'m-pic').replace('class="m-pic','id="mPic" class="m-pic');
   document.getElementById('mName').textContent=it.nome;
   document.getElementById('mPrice').textContent=brl(it.valor);
   const pay=document.getElementById('mPay');
-  if(!CONFIG.pixChave||!CONFIG.pixNome){
-    pay.innerHTML='<p class="m-soon">Obrigado pelo carinho! Os dados do Pix para presentear serão adicionados em breve.</p>';
-  }else{
-    const code=pixPayload(it.valor,it.nome);
-    let h='<p class="m-step">1 · Pague com Pix</p><p class="m-txt">Copie o código abaixo e cole na opção <strong style="font-weight:400;color:var(--ink)">Pix copia e cola</strong> do seu banco — o valor já vem preenchido.</p>'+
-      '<button class="btn" id="copyPix">'+icoCopy+'<span>Copiar código Pix</span></button>'+
+  const hasPix=CONFIG.pixChave&&CONFIG.pixNome;
+  let h='';
+  if(CONFIG.infinitePay){
+    h+='<p class="m-step">Cartão de crédito ou Pix</p><p class="m-txt">Pagamento seguro pela InfinitePay — cartão em até 12x ou Pix, com o valor já preenchido.</p>'+
+       '<button class="btn" id="payIP">'+icoCard+'<span>Presentear agora</span></button><p class="m-err" id="payErr" style="display:none"></p>';
+  }
+  if(hasPix){
+    h+=(CONFIG.infinitePay?'<p class="m-or">ou Pix direto</p>':'<p class="m-step">Pague com Pix</p>')+
+      '<p class="m-txt">Copie o código e cole na opção <strong style="font-weight:400;color:var(--ink)">Pix copia e cola</strong> do seu banco.</p>'+
+      '<button class="btn line" id="copyPix">'+icoCopy+'<span>Copiar código Pix</span></button>'+
       '<div class="qr" id="qr"></div>'+
       '<p class="m-key">Chave Pix: '+esc(CONFIG.pixChave)+'<br>'+esc(CONFIG.pixNome)+'</p>';
-    if(CONFIG.whatsapp){
-      const msg='Olá, '+CONFIG.noivos+'! 💍 Acabei de enviar o presente "'+it.nome+'" ('+brl(it.valor)+') pela lista. Com carinho, ';
-      h+='<p class="m-step">2 · Avise os noivos</p><a class="btn line" target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(msg)+'">'+icoWpp+'<span>Enviar recado</span></a>';
-    }
-    pay.innerHTML=h;
+  }
+  if(!h) h='<p class="m-soon">Obrigado pelo carinho! Os dados para presentear serão adicionados em breve.</p>';
+  if(CONFIG.whatsapp&&(CONFIG.infinitePay||hasPix)){
+    const msg='Olá, '+CONFIG.noivos+'! 💍 Acabei de enviar o presente "'+it.nome+'" ('+brl(it.valor)+') pela lista. Com carinho, ';
+    h+='<p class="m-or">depois, se quiser</p><a class="btn line" target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(msg)+'">'+icoWpp+'<span>Enviar recado aos noivos</span></a>';
+  }
+  pay.innerHTML=h;
+  if(CONFIG.infinitePay){
+    const b=document.getElementById('payIP'),lbl=b.querySelector('span'),err=document.getElementById('payErr');
+    b.addEventListener('click',async()=>{
+      b.disabled=true;lbl.textContent='Abrindo pagamento…';err.style.display='none';
+      try{
+        const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:it.nome,valor:it.valor})});
+        const d=await r.json();
+        if(!r.ok||!d.url)throw new Error(d.error||'erro');
+        location.href=d.url;
+      }catch(e){
+        b.disabled=false;lbl.textContent='Presentear agora';
+        err.textContent='Não foi possível abrir o pagamento agora. Tente novamente em instantes.';err.style.display='';
+      }
+    });
+  }
+  if(hasPix){
+    const code=pixPayload(it.valor,it.nome);
     try{new QRCode(document.getElementById('qr'),{text:code,width:340,height:340,correctLevel:QRCode.CorrectLevel.M});}catch(e){document.getElementById('qr').remove();}
     const btn=document.getElementById('copyPix');const lbl=btn.querySelector('span');
     btn.addEventListener('click',()=>{
@@ -697,19 +785,60 @@ document.getElementById('close').addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-/* ─── Confirmar presença (link de RSVP ou WhatsApp) ─── */
+/* ─── Confirmar presença (lista de convidados) ─── */
 (function(){
-  const btn=document.getElementById('confirmBtn');
-  if(CONFIG.rsvpLink){
-    btn.href=CONFIG.rsvpLink;
-    txt('rsvpNote','Sua presença fará deste dia um momento ainda mais especial. Confirme com um toque no botão abaixo.');
-  }else if(CONFIG.whatsapp){
-    const msg='Olá! Confirmo minha presença no casamento de '+CONFIG.noivos+' ('+CONFIG.dataTexto+'). 💍\nNome(s): ';
-    btn.href='https://wa.me/'+CONFIG.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(msg);
-    txt('rsvpNote','Sua presença fará deste dia um momento ainda mais especial. Confirme com um toque — você será levado direto ao nosso WhatsApp.');
-  }else return;
-  document.getElementById('rsvp').style.display='';
+  const norm=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z ]/g,' ').replace(/\s+/g,' ').trim();
+  const small=new Set(['de','da','do','das','dos','e']);
+  const pretty=t=>t.split(' ').map((w,i)=>i&&small.has(w.toLowerCase())?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+  const list=CONVIDADOS.map(n=>({n:pretty(n),k:norm(n)}));
+  const form=document.getElementById('rsvpForm'),inp=document.getElementById('rsvpName');
+  const ok=document.getElementById('rsvpOk'),no=document.getElementById('rsvpNo');
+  const wa=CONFIG.whatsapp.replace(/\D/g,'');
+  const icoW=typeof icoWpp==='string'?icoWpp:'';
+  function find(q){
+    const k=norm(q);if(!k)return[];
+    const exact=list.filter(g=>g.k===k);if(exact.length)return exact;
+    const qt=k.split(' ');
+    return list.filter(g=>{const gt=g.k.split(' ');return qt.every(w=>gt.some(x=>x.startsWith(w)));});
+  }
+  function show(el){form.style.display='none';ok.style.display='none';no.style.display='none';el.style.display='';}
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const m=find(inp.value);
+    if(!inp.value.trim()){inp.classList.remove('err');void inp.offsetWidth;inp.classList.add('err');return;}
+    if(m.length===1){
+      const g=m[0];
+      txt('rsvpOkT','Que alegria, '+esc(g.n.split(' ')[0])+'!');
+      if(wa){
+        txt('rsvpOkM','Falta só um toque: envie a confirmação para os noivos pelo WhatsApp.');
+        const msg='Olá, '+CONFIG.noivos+'! 💍 Confirmo minha presença no casamento de vocês ('+CONFIG.dataTexto+').\nNome: '+g.n;
+        const b=document.getElementById('rsvpWpp');b.href='https://wa.me/'+wa+'?text='+encodeURIComponent(msg);
+        b.innerHTML=icoW+' Enviar confirmação';b.style.display='';b.style.marginTop='18px';
+      }else{
+        txt('rsvpOkM','Seu nome está na nossa lista. Mal podemos esperar para celebrar com você no dia '+CONFIG.dataTexto.toLowerCase()+'!');
+      }
+      show(ok);
+    }else{
+      if(m.length>1){
+        txt('rsvpNoT','Quase lá!');
+        txt('rsvpNoM','Encontramos mais de um convidado com esse nome. Digite seu nome e sobrenome.');
+      }else{
+        txt('rsvpNoT','Nome não encontrado');
+        txt('rsvpNoM','Não encontramos esse nome na lista de convidados. Confira se digitou como está no convite ou fale com os noivos.');
+      }
+      const h=document.getElementById('rsvpHelp');
+      if(wa&&!m.length){h.href='https://wa.me/'+wa+'?text='+encodeURIComponent('Olá! Tentei confirmar minha presença no convite de '+CONFIG.noivos+', mas meu nome não foi encontrado. Meu nome: '+inp.value.trim());h.style.display='';}
+      else h.style.display='none';
+      show(no);
+    }
+  });
+  document.querySelectorAll('#rsvp [data-reset]').forEach(b=>b.addEventListener('click',()=>{inp.value='';show(form);inp.focus();}));
 })();
+
+/* ─── volta do pagamento da InfinitePay ─── */
+if(new URLSearchParams(location.search).get('presente')==='obrigado'){
+  document.getElementById('thanks').style.display='';
+}
 
 /* ─── MÚSICA (YouTube escondido ou arquivo mp3) ─── */
 const musicToggle=document.getElementById('musicToggle');
@@ -776,7 +905,7 @@ document.getElementById('splash').addEventListener('click',function(){
     document.getElementById('main').classList.add('visible');
     musicToggle.style.display='flex';
     initReveal(); startCountdown();
-    if(location.hash==='#presentes')document.getElementById('gifts').scrollIntoView();
+    if(location.hash==='#presentes'||/presente=obrigado/.test(location.search))document.getElementById('gifts').scrollIntoView();
   },950);
 });
 
