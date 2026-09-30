@@ -182,6 +182,21 @@
   .dress-icon{width:34px;height:34px;margin:30px auto 0;color:var(--gold-deep);}
   .dress-main{font-family:'Bodoni Moda',serif;font-style:italic;font-size:26px;color:var(--ink);margin-top:22px;}
   .dress-note{font-size:13.5px;line-height:1.8;color:var(--ink-soft);max-width:380px;margin:14px auto 0;}
+  .dress-cols{display:grid;grid-template-columns:1fr;gap:14px;margin:26px auto 0;max-width:420px;text-align:left;}
+  .dress-card{background:#fff;border:1px solid var(--line);padding:18px 20px;box-shadow:0 14px 30px -26px rgba(39,48,42,.5);}
+  .dress-card h3{font-family:'Bodoni Moda',serif;font-weight:400;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:10px;}
+  .dress-card h3 span{font-family:'Jost',sans-serif;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);}
+  .dress-card ul{list-style:none;margin-top:10px;}
+  .dress-card li{font-size:13.5px;line-height:1.65;padding-left:16px;position:relative;margin-top:4px;}
+  .dress-card li::before{content:'';position:absolute;left:0;top:.72em;width:5px;height:5px;border:1px solid var(--gold-deep);transform:rotate(45deg);}
+  .dress-love{font-family:'Bodoni Moda',serif;font-style:italic;font-size:17px;color:var(--green-deep);margin:22px auto 0;max-width:360px;line-height:1.5;}
+  .tips{list-style:none;margin:40px auto 0;max-width:420px;text-align:left;counter-reset:tip;}
+  .tip{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--line);}
+  .tip:last-child{border-bottom:1px solid var(--line);}
+  .tip-ico{flex-shrink:0;width:42px;height:42px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold-deep);}
+  .tip-ico svg{width:20px;height:20px;}
+  .tip b{display:block;font-family:'Bodoni Moda',serif;font-weight:400;font-size:17.5px;color:var(--ink);line-height:1.3;}
+  .tip small{display:block;font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin-top:3px;}
 
   /* ───────── GIFTS ───────── */
   #gifts{padding:58px 0;text-align:center;}
@@ -414,15 +429,43 @@
     </div>
   </section>
 
-  <!-- DRESS -->
+  <!-- MANUAL DO CONVIDADO -->
   <section id="dress">
     <div class="inner">
-      <p class="sec-label reveal">traje</p>
-      <h2 class="sec-title reveal">Dress <span class="it">code</span></h2>
+      <p class="sec-label reveal">manual do convidado</p>
+      <h2 class="sec-title reveal">Para o nosso <span class="it">grande dia</span></h2>
       <div class="divider reveal"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
+
       <svg class="dress-icon reveal d1" viewBox="0 0 48 48" fill="none"><path d="M24 12a3 3 0 100-6 3 3 0 000 6zm0 0v3l-13 9c-2 1.4-1 4 1.4 4h23.2c2.4 0 3.4-2.6 1.4-4l-13-9" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 32h34" stroke="currentColor" stroke-width="1.3"/></svg>
-      <p class="dress-main reveal d1" id="dressMain"></p>
-      <p class="dress-note reveal d2">Pedimos apenas que evitem o <strong style="color:var(--ink);font-weight:400">branco</strong>, reservado à noiva. Fora isso, fiquem à vontade para celebrar com elegância e conforto.</p>
+      <p class="sec-label reveal d1" style="margin-top:14px">traje</p>
+      <p class="dress-main reveal d1" id="dressMain" style="margin-top:8px"></p>
+
+      <div class="dress-cols">
+        <div class="dress-card reveal d1">
+          <h3>Mulheres <span>· elas</span></h3>
+          <ul>
+            <li>Vestido longo</li>
+            <li>Sem decote profundo</li>
+          </ul>
+        </div>
+        <div class="dress-card reveal d2">
+          <h3>Homens <span>· eles</span></h3>
+          <ul>
+            <li>Camisa social, gravata e blazer</li>
+            <li>Calça social ou de alfaiataria</li>
+            <li>Sapato social — ou sapato casual de couro / tipo derby</li>
+          </ul>
+        </div>
+      </div>
+      <p class="dress-love reveal d2">Só queremos todos vocês bem lindos e elegantes! 🤍</p>
+
+      <ul class="tips">
+        <li class="tip reveal"><span class="tip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/><path d="M3 3l18 18"/></svg></span><div><b>Deixe seu celular no silencioso</b><small>Aproveite a cerimônia com a gente — os fotógrafos registram tudo.</small></div></li>
+        <li class="tip reveal"><span class="tip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 4-4 3-4-3z"/><path d="M8 7c-2 3-3 7-3 14h14c0-7-1-11-3-14"/></svg></span><div><b>Branco é a cor da noiva</b><small>Evite roupas brancas, off-white ou muito claras.</small></div></li>
+        <li class="tip reveal"><span class="tip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg></span><div><b>Não atrapalhe os fotógrafos</b><small>Deixe o corredor e a frente do altar livres para eles trabalharem.</small></div></li>
+        <li class="tip reveal"><span class="tip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></span><div><b>Não saia sem se despedir dos noivos</b><small>Queremos agradecer pessoalmente a sua presença.</small></div></li>
+        <li class="tip reveal"><span class="tip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg></span><div><b>Não se atrase, seja pontual</b><small>Chegue às <span data-hora></span> para não perder nenhum momento.</small></div></li>
+      </ul>
     </div>
   </section>
 
@@ -660,6 +703,7 @@ txt('placeTime','às '+CONFIG.horario);
 txt('placeName',CONFIG.localNome);
 txt('placeAddr',CONFIG.localEndereco);
 txt('dressMain',CONFIG.traje);
+document.querySelectorAll('[data-hora]').forEach(e=>e.textContent=CONFIG.horario);
 txt('verseText','“'+CONFIG.versiculo+'”');
 txt('verseRef',CONFIG.versiculoRef);
 document.getElementById('mapLocal').href=CONFIG.mapLocal;
