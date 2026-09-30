@@ -31,7 +31,7 @@ Todos os textos e links ficam no bloco `CONFIG` no final do `index.html`:
 - Ao tocar em **Presentear agora**, o convite chama `api/checkout.js` (Vercel Function), que cria um
   link no Checkout da InfinitePay (InfiniteTag `maria-clara-silva-864`) com o valor do item e redireciona
   o convidado. Depois do pagamento ele volta ao convite (`?presente=obrigado`) e vê um agradecimento.
-- Se `pixChave` e `pixNome` forem preenchidos, o Pix copia e cola aparece como alternativa.
+- Como alternativa, aparece o Pix direto (`maria.claraz2605@gmail.com`): código copia e cola com o valor, QR Code e botão para copiar a chave.
 - `whatsapp` (opcional) mostra o botão para o convidado avisar os noivos do presente.
 - A página é estática: não marca itens como "já presenteados".
 
@@ -39,7 +39,7 @@ Todos os textos e links ficam no bloco `CONFIG` no final do `index.html`:
 
 - A lista `CONVIDADOS` fica logo abaixo de `PRESENTES`. O convidado digita o nome (acentos e
   maiúsculas não importam; só o primeiro nome basta se for único na lista).
-- Com `whatsapp` preenchido, o convidado confirmado envia a confirmação aos noivos pelo WhatsApp.
+- Depois de confirmar, o botão **Avisar os noivos** abre o WhatsApp (+55 85 98802-4068) com a mensagem e o nome do convidado.
 
 ## Arquivos
 

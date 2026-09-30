@@ -297,6 +297,7 @@
   .btn:hover{background:transparent;color:var(--green-deep);}
   .btn.copied{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
   .btn.line{background:transparent;color:var(--ink);border-color:var(--ink);}
+  .btn.line.copied{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
   .btn svg{width:15px;height:15px;flex-shrink:0;}
   .m-key{font-size:12px;margin-top:10px;color:var(--ink-soft);word-break:break-all;}
   .btn[disabled]{opacity:.6;cursor:wait;}
@@ -550,13 +551,13 @@ const CONFIG = {
   infinitePay: true,
 
   // Pix direto (opcional) — aparece como alternativa no presente se preenchido.
-  pixChave:  '',              // CPF, e-mail, telefone (+5585...) ou chave aleatória
-  pixNome:   '',              // nome do titular da conta (como no banco)
+  pixChave:  'maria.claraz2605@gmail.com', // CPF, e-mail, telefone (+5585...) ou chave aleatória
+  pixNome:   'Maria Clara',              // nome do titular da conta (como no banco)
   pixCidade: 'FORTALEZA',
 
   // WhatsApp dos noivos: recebe as confirmações de presença (RSVP) e os recados
   // de presente. Só números, com DDI+DDD. Ex.: '5585999999999'
-  whatsapp: '',
+  whatsapp: '5585988024068',
 
   versiculo:    'Entrega o teu caminho ao Senhor; confia nele, e ele tudo fará.',
   versiculoRef: 'Salmos 37:5',
@@ -736,10 +737,11 @@ function openGift(it){
   }
   if(hasPix){
     h+=(CONFIG.infinitePay?'<p class="m-or">ou Pix direto</p>':'<p class="m-step">Pague com Pix</p>')+
-      '<p class="m-txt">Copie o código e cole na opção <strong style="font-weight:400;color:var(--ink)">Pix copia e cola</strong> do seu banco.</p>'+
+      '<p class="m-txt">Copie o código com o valor e cole na opção <strong style="font-weight:400;color:var(--ink)">Pix copia e cola</strong> do seu banco.</p>'+
       '<button class="btn line" id="copyPix">'+icoCopy+'<span>Copiar código Pix</span></button>'+
       '<div class="qr" id="qr"></div>'+
-      '<p class="m-key">Chave Pix: '+esc(CONFIG.pixChave)+'<br>'+esc(CONFIG.pixNome)+'</p>';
+      '<p class="m-key">Chave Pix (e-mail): <strong style="font-weight:400;color:var(--ink)">'+esc(CONFIG.pixChave)+'</strong><br>'+esc(CONFIG.pixNome)+'</p>'+
+      '<button class="btn line" id="copyKey">'+icoCopy+'<span>Copiar chave Pix</span></button>';
   }
   if(!h) h='<p class="m-soon">Obrigado pelo carinho! Os dados para presentear serão adicionados em breve.</p>';
   if(CONFIG.whatsapp&&(CONFIG.infinitePay||hasPix)){
@@ -770,6 +772,12 @@ function openGift(it){
       const done=()=>{btn.classList.add('copied');lbl.textContent='Código copiado!';setTimeout(()=>{btn.classList.remove('copied');lbl.textContent='Copiar código Pix';},2200);};
       if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(code).then(done).catch(()=>fallback(code,done));
       else fallback(code,done);
+    });
+    const kb=document.getElementById('copyKey'),kl=kb.querySelector('span'),key=CONFIG.pixChave.trim();
+    kb.addEventListener('click',()=>{
+      const done=()=>{kb.classList.add('copied');kl.textContent='Chave copiada!';setTimeout(()=>{kb.classList.remove('copied');kl.textContent='Copiar chave Pix';},2200);};
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(key).then(done).catch(()=>fallback(key,done));
+      else fallback(key,done);
     });
   }
   modal.classList.add('open');document.body.classList.add('lock');
@@ -810,10 +818,10 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
       const g=m[0];
       txt('rsvpOkT','Que alegria, '+esc(g.n.split(' ')[0])+'!');
       if(wa){
-        txt('rsvpOkM','Falta só um toque: envie a confirmação para os noivos pelo WhatsApp.');
+        txt('rsvpOkM','Seu nome está na nossa lista! Agora é só avisar os noivos com um toque:');
         const msg='Olá, '+CONFIG.noivos+'! 💍 Confirmo minha presença no casamento de vocês ('+CONFIG.dataTexto+').\nNome: '+g.n;
         const b=document.getElementById('rsvpWpp');b.href='https://wa.me/'+wa+'?text='+encodeURIComponent(msg);
-        b.innerHTML=icoW+' Enviar confirmação';b.style.display='';b.style.marginTop='18px';
+        b.innerHTML=icoW+' Avisar os noivos';b.style.display='';b.style.marginTop='18px';
       }else{
         txt('rsvpOkM','Seu nome está na nossa lista. Mal podemos esperar para celebrar com você no dia '+CONFIG.dataTexto.toLowerCase()+'!');
       }
